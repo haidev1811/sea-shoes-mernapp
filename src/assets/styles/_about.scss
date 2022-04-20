@@ -1,0 +1,17 @@
+.about{
+    margin-top: 80px;
+    h2{
+        font-size: 36px;
+        margin-bottom: 15px;
+        &:hover{
+            color: #f72b3f;
+            cursor: pointer;
+        }
+    }
+    &-content{
+        min-height: 400px;
+        p{
+            margin-bottom: 15px;
+        }
+    }
+}

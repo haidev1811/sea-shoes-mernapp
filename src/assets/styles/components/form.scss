@@ -1,0 +1,50 @@
+.form{
+    &-item{
+        margin-bottom: 20px;
+    label{
+        font-size: 16px;
+    }
+    input{
+        height: 50px;
+        width: 100%;
+        border: 1px solid #eaebf3;
+        padding-left: 15px;
+        border-radius: 4px;
+        &::placeholder{
+            color : #b8b9b9;
+            font-size: 14px;
+        }
+    }
+    textarea{
+        width: 100%;
+        border: 1px solid #eaebf3;
+        padding: 15px;
+        height: 100px;
+        outline: none;
+    }
+    }
+    &-btn{
+        button{
+            width: 100%;
+            text-align: center;
+            color: white;
+            background-color: #f72b3f;
+            height: 50px;
+            line-height: 50px;
+            border: 1px solid #f72b3f;
+            font-size: 16px;
+            &:hover{
+                background-color: white;
+                color: #f72b3f; 
+            }
+        }
+    }
+    &-pw {
+        text-align: center;
+        margin-top: 20px;
+        a:hover {
+          color: #ff2a2d;
+        }
+      }
+}
+

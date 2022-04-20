@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/lc_lightbox.min.css">
+    <style>
+        .elem {
+			display: inline-block;
+			font-size: 0;
+			width: 33%;
+			border: 20px solid transparent;
+			border-bottom: none;
+			background: #fff;
+			padding: 10px;
+			height: auto;
+			background-clip: padding-box;
+		}
+        .elem>span {
+			display: block;
+			cursor: pointer;
+			height: 0;
+			padding-bottom: 70%;
+			background-size: cover;
+			background-position: center center;
+		}
+    </style>
+</head>
+<body>
+    <div class="content">
+
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            
+            data-lcl-thumb="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1502082553048-f009c37129b9?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            title="image 2" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone"
+            data-lcl-thumb="https://images.unsplash.com/photo-1502082553048-f009c37129b9?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1502082553048-f009c37129b9?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1442850473887-0fb77cd0b337?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            title="image 3" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone"
+            data-lcl-thumb="https://images.unsplash.com/photo-1442850473887-0fb77cd0b337?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1442850473887-0fb77cd0b337?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+
+
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            title="image 4" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone"
+            data-lcl-thumb="https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            title="image 5" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone"
+            data-lcl-thumb="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+        <a class="elem"
+            href="https://images.unsplash.com/photo-1482192505345-5655af888cc4?dpr=1&auto=format&fit=crop&w=2000&q=80&cs=tinysrgb"
+            title="image 6" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone"
+            data-lcl-thumb="https://images.unsplash.com/photo-1482192505345-5655af888cc4?dpr=1&auto=format&fit=crop&w=150&q=80&cs=tinysrgb">
+            <span
+                style="background-image: url(https://images.unsplash.com/photo-1482192505345-5655af888cc4?dpr=1&auto=format&fit=crop&w=400&q=80&cs=tinysrgb);"></span>
+        </a>
+
+        <br /><br />
+    </div>
+    <script src="../Jquery/jquery-3.5.1.min.js"></script>
+    <script src="./js/lc_lightbox.lite.min.js"></script>
+    <script src="./AlloyFinger/alloy_finger.min.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function (e) {
+
+			// live handler
+			lc_lightbox('.elem', {
+				wrap_class: 'lcl_fade_oc',
+				gallery: true,
+				thumb_attr: 'data-lcl-thumb',
+
+				skin: 'minimal',
+				radius: 0,
+				padding: 0,
+				border_w: 0,
+			});
+
+		});
+	</script>   
+</body>
+</html>
