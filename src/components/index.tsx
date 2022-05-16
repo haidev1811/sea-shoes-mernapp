@@ -3,6 +3,11 @@ export { default as Header } from "./common/header";
 export { default as Footer } from "./common/footer";
 export { default as ScrollToTop } from "./common/scrolltotop";
 export { default as Breadcrumbs } from "./common/breadcrumbs";
+export { default as CustomLink } from "./common/customlink/CustomLink";
+export { default as CustomLinkAdmin } from "./common/customlink/CustomLinkAdmin";
+export { default as InputForm } from "./common/inputform/InputForm";
+export { default as ModalCart } from "./common/modalcart/ModalCart";
+export { default as ModalLogin } from "./common/modallogin/ModalLogin";
 
 //Homepage
 export { default as BannerHome } from "./homepage/Banner";
@@ -48,6 +53,9 @@ export { default as Search } from "./searchpage/Search";
 
 //Paymentpage
 export { default as Payment } from "./paymentpage/Payment";
+
+//Accountpage
+export { default as Account } from "./accountpage";
 
 //Adminpage
 export { default as Chart } from "./adminpage/Chart";

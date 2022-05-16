@@ -1,5 +1,5 @@
 import React from "react";
-import { AboutInfo, Breadcrumbs, EmailHome } from "../components";
+import { AboutInfo, Breadcrumbs, EmailHome, ModalCart } from "../components";
 
 const AboutPage = () => {
   return (
@@ -7,6 +7,7 @@ const AboutPage = () => {
       <Breadcrumbs label="Giới thiệu" category="" />
       <AboutInfo />
       <EmailHome />
+      <ModalCart />
     </>
   );
 };

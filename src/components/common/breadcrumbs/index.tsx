@@ -1,8 +1,8 @@
 import React from "react";
 
 interface Prop {
-  label: string;
-  category: string;
+  label: any;
+  category: any;
 }
 
 const Breadcrumbs = (prop: Prop) => {

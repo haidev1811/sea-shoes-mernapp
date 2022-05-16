@@ -19,9 +19,9 @@ const HomePage = () => {
       <TitleHome path="/" label="Hàng mới về" />
       <ListProductHome />
       <Banner3Home />
-      <CategoryHome />
-      <CategoryHome />
-      <CategoryHome />
+      <CategoryHome type="women" idCat={1} />
+      <CategoryHome type="men" idCat={2} />
+      <CategoryHome type="kid" idCat={3} />
       <Banner4Home />
       <TitleHome path="/" label="Tin thời trang" />
       <NewsHome />

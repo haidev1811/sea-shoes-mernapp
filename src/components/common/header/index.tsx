@@ -1,14 +1,14 @@
 import React from "react";
-import useScript from "../../../hooks/useScript";
+import { useLocation } from "react-router-dom";
 import BottomHeader from "./BottomHeader";
 import Menu from "./Menu";
 import TopHeader from "./TopHeader";
 
 const Header = () => {
-  useScript("./assets/js/header.js");
+  const checkRoleAdmin = useLocation().pathname.includes("admin");
 
   return (
-    <header>
+    <header className={`${checkRoleAdmin ? "d-none" : ""}`}>
       <TopHeader />
       <BottomHeader />
       <Menu />

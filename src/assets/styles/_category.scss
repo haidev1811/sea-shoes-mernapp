@@ -81,6 +81,7 @@
           display: flex;
           align-items: center;
           margin-right: 5px;
+          cursor: pointer;
           input {
             display: none;
           }
@@ -104,12 +105,12 @@
               transform: translate(-50%, -50%);
             }
           }
-          input[type="checkbox"]:checked + label {
+          input[type="radio"]:checked + label {
             &::before {
               display: block;
             }
           }
-          input[type="checkbox"]:hover + label {
+          input[type="radio"]:hover + label {
             &::before {
               display: block;
             }
@@ -123,8 +124,20 @@
           #green + label {
             background-color: #00dd70;
           }
-          #blue + label {
+          #violet + label {
             background-color: #b031b6;
+          }
+          #orange + label {
+            background-color: #ff6347;
+          }
+          #blue + label {
+            background-color: #0000ff;
+          }
+          #black + label {
+            background-color: #000;
+          }
+          #white + label {
+            background-color: #f1f1f1;
           }
         }
       }
@@ -189,7 +202,7 @@
               transform: translate(-50%, -50%);
             }
           }
-          input[type="checkbox"]:checked + label {
+          input[type="radio"]:checked + label {
             border-color: #f72b3f;
             &::before {
               display: block;
@@ -402,7 +415,7 @@
     }
   }
   .like {
-    &__list {
+    &__list-product {
       border: 1px solid white;
       margin: 0 15px;
       padding: 0;
@@ -424,7 +437,7 @@
 }
 @media screen and (max-width: 992px) {
   .category {
-    &__list {
+    &__list-product {
       .product {
         width: 33.33%;
       }
@@ -435,7 +448,7 @@
 @media screen and (max-width: 768px) {
   .category {
     padding: 40px 0;
-    &__list {
+    &__list-product {
       .product {
         width: 50%;
       }
@@ -451,7 +464,7 @@
     }
   }
   .like {
-    &__list {
+    &__list-product {
       .product {
         &__infor {
           padding: 0 15px;

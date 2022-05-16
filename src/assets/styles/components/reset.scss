@@ -31,6 +31,11 @@ ul {
   &:hover {
     text-decoration: none;
   }
+  &.disable {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.7;
+  }
 }
 
 p {

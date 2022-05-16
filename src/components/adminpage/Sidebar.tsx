@@ -1,98 +1,167 @@
 import React, { useContext } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
+import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
+import { Link, useHistory } from "react-router-dom";
+import { DarkModeContext } from "../../context/darkmode/darkModeContext";
+import { CustomLinkAdmin } from "../index";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/actions/auth/auth.action";
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { dispatch: dispatchContext } = useContext(DarkModeContext);
+
+  const userInfoFromStorage = localStorage.getItem("sea-user")
+    ? JSON.parse(localStorage.getItem("sea-user")!)
+    : null;
+
+  const checkRole = userInfoFromStorage.user.role[0];
+
+  const linkToAccount = () => {
+    history.push("/account");
+  };
+
+  const handleLogout = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    dispatch(logout());
+    history.push("/");
+    window.location.reload();
+  };
+
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+        <Link to="/admin" style={{ textDecoration: "none" }}>
+          <span className="logo">Sea Shoes</span>
         </Link>
       </div>
-      <hr />
+      <div className="hr"></div>
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
-          <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Users</span>
-            </li>
-          </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
-            <li>
-              <StoreIcon className="icon" />
-              <span>Products</span>
-            </li>
-          </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
+          <CustomLinkAdmin
+            to="/admin"
+            activeOnlyWhenExact={true}
+            label={
+              <>
+                <DashboardIcon className="icon" />
+                <span>Dashboard</span>
+              </>
+            }
+          />
+          <p className="title">Danh sách</p>
+          {checkRole === "admin" && (
+            <CustomLinkAdmin
+              to="/admin/user"
+              activeOnlyWhenExact={false}
+              label={
+                <>
+                  <PersonOutlineIcon className="icon" />
+                  <span>Người dùng</span>
+                </>
+              }
+            />
+          )}
+          <CustomLinkAdmin
+            to="/admin/product"
+            activeOnlyWhenExact={false}
+            label={
+              <>
+                <StoreIcon className="icon" />
+                <span>Sản phẩm</span>
+              </>
+            }
+          />
+          <CustomLinkAdmin
+            to="/admin/order"
+            activeOnlyWhenExact={false}
+            label={
+              <>
+                <CreditCardIcon className="icon" />
+                <span>Đơn hàng</span>
+              </>
+            }
+          />
+          <CustomLinkAdmin
+            to="/admin/news"
+            activeOnlyWhenExact={false}
+            label={
+              <>
+                <NewspaperIcon className="icon" />
+                <span>Bài viết</span>
+              </>
+            }
+          />
+          <CustomLinkAdmin
+            to="/admin/brand"
+            activeOnlyWhenExact={false}
+            label={
+              <>
+                <StorefrontOutlinedIcon className="icon" />
+                <span>Thương hiệu</span>
+              </>
+            }
+          />
+          <CustomLinkAdmin
+            to="/admin/category"
+            activeOnlyWhenExact={false}
+            label={
+              <>
+                <BookOutlinedIcon className="icon" />
+                <span>Danh mục</span>
+              </>
+            }
+          />
+          <p className="title">Tiện ích</p>
           <li>
             <InsertChartIcon className="icon" />
-            <span>Stats</span>
+            <span>Thống kê</span>
           </li>
           <li>
             <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
+            <span>Thông báo</span>
           </li>
-          <p className="title">SERVICE</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
+          <p className="title">Dịch vụ</p>
           <li>
             <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
+            <span>Nhật kí</span>
           </li>
           <li>
             <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
+            <span>Cài đặt</span>
           </li>
-          <p className="title">USER</p>
-          <li>
+          <p className="title">Cá nhân</p>
+          <li onClick={linkToAccount}>
             <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+            <span>Hồ sơ</span>
           </li>
-          <li>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span>Đăng xuất</span>
           </li>
         </ul>
       </div>
       <div className="bottom">
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
+          onClick={() => dispatchContext({ type: "LIGHT" })}
         ></div>
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
+          onClick={() => dispatchContext({ type: "DARK" })}
         ></div>
       </div>
     </div>

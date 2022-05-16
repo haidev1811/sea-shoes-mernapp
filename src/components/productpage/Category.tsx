@@ -1,7 +1,19 @@
 import React, { useEffect } from "react";
 import $ from "jquery";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { categoriesState } from "../../redux/reducers/product/category.reducer";
+import { brandsState } from "../../redux/reducers/product/brand.reducer";
+import { getListCategory } from "../../redux/actions/product/category.action";
+import { getListBrand } from "../../redux/actions/product/brand.action";
+import { Link, useHistory } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
-const Category = () => {
+interface Props {
+  getFilterUrl?: any;
+}
+
+const Category = ({ getFilterUrl }: Props) => {
   useEffect(() => {
     $(".cmitem__list-menu .fa-angle-down").on("click", function () {
       $(".cmitem__list-submenu").slideDown();
@@ -32,6 +44,33 @@ const Category = () => {
     });
   }, []);
 
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+  const listCategory = useSelector<RootState, categoriesState>(
+    (state) => state.listCategory
+  );
+  const { categoryInfo, isFetching: categoryIsFetching } = listCategory;
+  const listBrand = useSelector<RootState, brandsState>(
+    (state) => state.listBrand
+  );
+  const { brandInfo, isFetching: brandIsFetching } = listBrand;
+
+  useEffect(() => {
+    dispatch(getListCategory());
+    dispatch(getListBrand());
+  }, [dispatch]);
+
+  const handleChangeBrandFilter = (brand: any) => {
+    history.push(getFilterUrl({ brand: brand }));
+  };
+  const handleChangeColourFilter = (colour: any) => {
+    history.push(getFilterUrl({ colour: colour }));
+  };
+  const handleChangeSizeFilter = (size: any) => {
+    history.push(getFilterUrl({ size: size }));
+  };
+
   return (
     <div className="category__menu col-ct box-shadow">
       <div className="row-ct">
@@ -43,55 +82,49 @@ const Category = () => {
           <div className="cmitem__list">
             <ul className="cmitem__list-menu">
               <li>
-                <a href="/" className="link">
+                <Link to="/" className="link">
                   Trang chủ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to="/about" className="link">
                   Giới thiệu
-                </a>
+                </Link>
               </li>
               <li>
                 <div>
-                  <a href="/" className="link">
+                  <Link to="/product" className="link">
                     Sản phẩm
-                  </a>
+                  </Link>
                   <i className="fas fa-angle-down"></i>
                   <i className="fas fa-angle-up"></i>
                 </div>
                 <ul className="cmitem__list-submenu">
-                  <li>
-                    <a href="/" className="link">
-                      Giày Training & Gym
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="link">
-                      Giày Basketball
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="link">
-                      Giày Running
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="link">
-                      Giày Jodan
-                    </a>
-                  </li>
+                  {categoryIsFetching ? (
+                    <CircularProgress />
+                  ) : (
+                    categoryInfo?.map((item, index) => (
+                      <li key={index}>
+                        <Link
+                          to={getFilterUrl({ category: item.name })}
+                          className="link"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))
+                  )}
                 </ul>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to="/news" className="link">
                   Tin tức
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to="/contact" className="link">
                   Liên hệ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -104,21 +137,61 @@ const Category = () => {
           </div>
           <div className="cmitem__list">
             <div className="color">
-              <div className="color-item">
-                <input type="checkbox" id="yellow" />
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("yellow")}
+              >
+                <input type="radio" name="color" id="yellow" />
                 <label htmlFor="yellow"></label>
               </div>
-              <div className="color-item">
-                <input type="checkbox" id="red" />
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("red")}
+              >
+                <input type="radio" name="color" id="red" />
                 <label htmlFor="red"></label>
               </div>
-              <div className="color-item">
-                <input type="checkbox" id="green" />
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("green")}
+              >
+                <input type="radio" name="color" id="green" />
                 <label htmlFor="green"></label>
               </div>
-              <div className="color-item">
-                <input type="checkbox" id="blue" />
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("blue")}
+              >
+                <input type="radio" name="color" id="blue" />
                 <label htmlFor="blue"></label>
+              </div>
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("black")}
+              >
+                <input type="radio" name="color" id="black" />
+                <label htmlFor="black"></label>
+              </div>
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("orange")}
+              >
+                <input type="radio" name="color" id="orange" />
+                <label htmlFor="orange"></label>
+              </div>
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("white")}
+              >
+                <input type="radio" name="color" id="white" />
+                <label htmlFor="white"></label>
+              </div>
+              <div
+                className="color-item"
+                onClick={() => handleChangeColourFilter("violet")}
+              >
+                <input type="radio" name="color" id="violet" />
+                <label htmlFor="violet"></label>
               </div>
             </div>
           </div>
@@ -131,48 +204,75 @@ const Category = () => {
           </div>
           <div className="cmitem__list">
             <div className="size">
-              <div className="size-item">
-                <input type="checkbox" id="s35" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(35)}
+              >
+                <input type="radio" name="size" id="s35" />
                 <label htmlFor="s35"></label>
                 <span>35</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s36" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(36)}
+              >
+                <input type="radio" name="size" id="s36" />
                 <label htmlFor="s36"></label>
                 <span>36</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s37" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(37)}
+              >
+                <input type="radio" name="size" id="s37" />
                 <label htmlFor="s37"></label>
                 <span>37</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s38" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(38)}
+              >
+                <input type="radio" name="size" id="s38" />
                 <label htmlFor="s38"></label>
                 <span>38</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s39" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(39)}
+              >
+                <input type="radio" name="size" id="s39" />
                 <label htmlFor="s39"></label>
                 <span>39</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s40" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(40)}
+              >
+                <input type="radio" name="size" id="s40" />
                 <label htmlFor="s40"></label>
                 <span>40</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s41" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(41)}
+              >
+                <input type="radio" name="size" id="s41" />
                 <label htmlFor="s41"></label>
                 <span>41</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s42" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(42)}
+              >
+                <input type="radio" name="size" id="s42" />
                 <label htmlFor="s42"></label>
                 <span>42</span>
               </div>
-              <div className="size-item">
-                <input type="checkbox" id="s43" />
+              <div
+                className="size-item"
+                onClick={() => handleChangeSizeFilter(43)}
+              >
+                <input type="radio" name="size" id="s43" />
                 <label htmlFor="s43"></label>
                 <span>43</span>
               </div>
@@ -187,31 +287,21 @@ const Category = () => {
           </div>
           <div className="cmitem__list">
             <div className="size">
-              <div className="size-item">
-                <input type="checkbox" id="adidas" />
-                <label htmlFor="adidas"></label>
-                <span>Adidas</span>
-              </div>
-              <div className="size-item">
-                <input type="checkbox" id="puma" />
-                <label htmlFor="puma"></label>
-                <span>Puma</span>
-              </div>
-              <div className="size-item">
-                <input type="checkbox" id="nike" />
-                <label htmlFor="nike"></label>
-                <span>Nike</span>
-              </div>
-              <div className="size-item">
-                <input type="checkbox" id="asics" />
-                <label htmlFor="asics"></label>
-                <span>Asics</span>
-              </div>
-              <div className="size-item">
-                <input type="checkbox" id="balance" />
-                <label htmlFor="balance"></label>
-                <span>New Balance</span>
-              </div>
+              {brandIsFetching ? (
+                <CircularProgress />
+              ) : (
+                brandInfo?.map((item, index) => (
+                  <div
+                    className="size-item"
+                    key={index}
+                    onClick={() => handleChangeBrandFilter(item.name)}
+                  >
+                    <input type="radio" name="brand" id={item.slug} />
+                    <label htmlFor={item.slug}></label>
+                    <span>{item.name}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -224,39 +314,39 @@ const Category = () => {
           <div className="cmitem__list">
             <ul className="sort">
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 0 })} className="link">
                   Mặc định
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 1 })} className="link">
                   A<i className="las la-long-arrow-alt-right"></i>Z
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 2 })} className="link">
                   Z<i className="las la-long-arrow-alt-right"></i>A
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 5 })} className="link">
                   Giá tăng dần
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 6 })} className="link">
                   Giá giảm dần
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 3 })} className="link">
                   Hàng mới nhất
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="link">
+                <Link to={getFilterUrl({ sort: 4 })} className="link">
                   Hàng cũ nhất
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

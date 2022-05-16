@@ -1,8 +1,13 @@
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Swiper from "swiper";
-import news1 from "../../assets/images/news1.jpg";
-import news2 from "../../assets/images/news2.jpg";
-import news3 from "../../assets/images/news3.jpg";
+import parse from "html-react-parser";
+import dayjs from "dayjs";
+import { getListNews } from "../../redux/actions/news/news.action";
+import { newssState } from "../../redux/reducers/news/news.reducer";
+import { RootState } from "../../redux/store";
 
 const News = () => {
   useEffect(() => {
@@ -22,115 +27,50 @@ const News = () => {
     });
   });
 
+  const dispatch = useDispatch();
+  const listNews = useSelector<RootState, newssState>(
+    (state) => state.listNews
+  );
+  const { newsInfo, isFetching } = listNews;
+
+  useEffect(() => {
+    dispatch(getListNews());
+  }, [dispatch]);
+
   return (
     <div className="news">
       <div className="container-ct">
         <div className="swiper-container swiper-news">
           <div className="swiper-wrapper">
-            <div className="swiper-slide news__item">
-              <div className="news__item-img">
-                <a href="./news-detail.html" className="link">
-                  <img src={news1} alt="" />
-                </a>
-              </div>
-              <div className="news__item-note">
-                <div className="note__date">
-                  <i className="far fa-calendar"></i>
-                  <span>28/10/2019</span>
+            {isFetching ? (
+              <CircularProgress />
+            ) : (
+              newsInfo?.map((news, index) => (
+                <div className="swiper-slide news__item" key={index}>
+                  <div className="news__item-img">
+                    <Link to={`/news/${news.slug}`} className="link">
+                      <img src={news.imgTitle} alt="" />
+                    </Link>
+                  </div>
+                  <div className="news__item-note">
+                    <div className="note__date">
+                      <i className="far fa-calendar"></i>
+                      <span>{dayjs(news.createdAt).format("DD/MM/YYYY")}</span>
+                    </div>
+                    <div className="note__date">
+                      Đăng bởi
+                      <span> {news.author}</span>
+                    </div>
+                  </div>
+                  <div className="news__item-title">
+                    <Link to={`/news/${news.slug}`} className="link">
+                      {news.title}
+                    </Link>
+                    <span>{parse(news.content)}</span>
+                  </div>
                 </div>
-                <div className="note__date">
-                  Đăng bởi
-                  <span>28/10/2019</span>
-                </div>
-              </div>
-              <div className="news__item-title">
-                <a href="./news-detail.html" className="link">
-                  Hướng dẫn cách làm trắng đế giày bị ố vàng chuẩn chỉ
-                </a>
-                <span>
-                  Adidas là một trong những hàng thời trang sneaker lớn nhất
-                  hiện nay của thế giới ...
-                </span>
-              </div>
-            </div>
-            <div className="swiper-slide news__item">
-              <div className="news__item-img">
-                <a href="./news-detail.html" className="link">
-                  <img src={news2} alt="" />
-                </a>
-              </div>
-              <div className="news__item-note">
-                <div className="note__date">
-                  <i className="far fa-calendar"></i>
-                  <span>28/10/2019</span>
-                </div>
-                <div className="note__date">
-                  Đăng bởi
-                  <span>28/10/2019</span>
-                </div>
-              </div>
-              <div className="news__item-title">
-                <a href="./news-detail.html" className="link">
-                  Hướng dẫn cách làm trắng đế giày bị ố vàng chuẩn chỉ
-                </a>
-                <span>
-                  Adidas là một trong những hàng thời trang sneaker lớn nhất
-                  hiện nay của thế giới ...
-                </span>
-              </div>
-            </div>
-            <div className="swiper-slide news__item">
-              <div className="news__item-img">
-                <a href="/" className="link">
-                  <img src={news3} alt="" />
-                </a>
-              </div>
-              <div className="news__item-note">
-                <div className="note__date">
-                  <i className="far fa-calendar"></i>
-                  <span>28/10/2019</span>
-                </div>
-                <div className="note__date">
-                  Đăng bởi
-                  <span>28/10/2019</span>
-                </div>
-              </div>
-              <div className="news__item-title">
-                <a href="/" className="link">
-                  Hướng dẫn cách làm trắng đế giày bị ố vàng chuẩn chỉ
-                </a>
-                <span>
-                  Adidas là một trong những hàng thời trang sneaker lớn nhất
-                  hiện nay của thế giới ...
-                </span>
-              </div>
-            </div>
-            <div className="swiper-slide news__item">
-              <div className="news__item-img">
-                <a href="/" className="link">
-                  <img src={news1} alt="" />
-                </a>
-              </div>
-              <div className="news__item-note">
-                <div className="note__date">
-                  <i className="far fa-calendar"></i>
-                  <span>28/10/2019</span>
-                </div>
-                <div className="note__date">
-                  Đăng bởi
-                  <span>28/10/2019</span>
-                </div>
-              </div>
-              <div className="news__item-title">
-                <a href="/" className="link">
-                  Hướng dẫn cách làm trắng đế giày bị ố vàng chuẩn chỉ
-                </a>
-                <span>
-                  Adidas là một trong những hàng thời trang sneaker lớn nhất
-                  hiện nay của thế giới ...
-                </span>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>

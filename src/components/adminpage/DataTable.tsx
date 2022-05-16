@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../utils/datatablesource";
+import { useDispatch } from "react-redux";
+import { deleteBrand } from "../../redux/actions/product/brand.action";
+import { deleteCategory } from "../../redux/actions/product/category.action";
 
-const DataTable = () => {
-  const [data, setData] = useState(userRows);
+interface Props {
+  title: String;
+  type: String;
+  columns: any;
+  rows: any;
+  reload: any;
+  setReload: any;
+}
 
-  const handleDelete = (id: any) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+const DataTable = ({
+  title,
+  type,
+  columns,
+  rows,
+  reload,
+  setReload,
+}: Props) => {
+  const dispatch = useDispatch();
 
   const actionColumn = [
     {
@@ -18,32 +32,55 @@ const DataTable = () => {
       renderCell: (params: any) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+            <Link
+              to={`/admin/${type}/${params.row._id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="viewButton">Chi tiết</div>
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             >
-              Delete
+              Xóa
             </div>
           </div>
         );
       },
     },
   ];
+
+  const handleDelete = async (id: string) => {
+    switch (type) {
+      case "brand":
+        await dispatch(deleteBrand(id));
+        break;
+      case "category":
+        await dispatch(deleteCategory(id));
+        break;
+      default:
+        break;
+    }
+    setReload(!reload);
+  };
+
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/new" className="link">
-          Add New
-        </Link>
+        {title}
+        {type === "user" || type === "order" ? (
+          <></>
+        ) : (
+          <Link to={`/admin/${type}/add`} className="link">
+            Thêm mới
+          </Link>
+        )}
       </div>
       <DataGrid
         className="datagrid"
-        rows={data}
-        columns={userColumns.concat(actionColumn)}
+        getRowId={(row) => row._id}
+        rows={rows}
+        columns={columns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

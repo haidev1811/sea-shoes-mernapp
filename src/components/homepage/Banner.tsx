@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import Swiper from "swiper";
+import SwiperCore, { Pagination, Swiper } from "swiper/core";
 import slider1 from "../../assets/images/slider_1.jpg";
 
 const Banner = () => {
+  SwiperCore.use([Pagination]);
   useEffect(() => {
     new Swiper(".swiper-banner", {
       pagination: {
-        el: ".swiper-pagination"
+        el: ".swiper-pagination",
       },
     });
   });

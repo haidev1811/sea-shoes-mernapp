@@ -20,13 +20,13 @@
     width: 50%;
     padding: 0 15px;
     padding-left: 50px;
-  
+
     .form-item {
       width: 100%;
-      label{
+      label {
         font-size: 14px;
-        span{
-          color:  #ff2a2d;
+        span {
+          color: #ff2a2d;
         }
       }
       input {
@@ -45,9 +45,9 @@
         border: 1px solid #ff2a2d;
         background-color: #ff2a2d;
         color: white;
-        &:hover{
+        &:hover {
           background-color: white;
-          color: #ff2a2d
+          color: #ff2a2d;
         }
       }
     }
@@ -93,4 +93,3 @@
     }
   }
 }
-

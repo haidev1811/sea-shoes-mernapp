@@ -213,7 +213,7 @@ h2 {
 }
 @media screen and (max-width: 992px) {
   .category {
-    &__list {
+    &__list-search {
       .product {
         width: 33.33%;
       }
@@ -224,7 +224,7 @@ h2 {
 @media screen and (max-width: 768px) {
   .category {
     padding: 40px 0;
-    &__list {
+    &__list-search {
       .product {
         width: 50%;
       }
@@ -240,7 +240,7 @@ h2 {
     }
   }
   .like {
-    &__list {
+    &__list-search {
       .product {
         &__infor {
           padding: 0 15px;

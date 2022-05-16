@@ -1,20 +1,45 @@
-import React, { useEffect } from "react";
-import Swiper from "swiper";
-import image1 from "../../assets/images/1.jpg";
-import image2 from "../../assets/images/2.jpg";
-import image3 from "../../assets/images/3.jpg";
-import image4 from "../../assets/images/4.jpg";
-import image5 from "../../assets/images/5.jpg";
-import image6 from "../../assets/images/6.jpg";
+import React, { useEffect, useState } from "react";
+import SwiperCore, { Navigation, Swiper } from "swiper/core";
+import axios from "../../utils/axios";
+import { productFilterInfo } from "../../redux/reducers/product/product.reducer";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { authState } from "../../redux/reducers/auth/auth.reducer";
+import Popup from "reactjs-popup";
+import ModalLogin from "../common/modallogin/ModalLogin";
+import { addToCart } from "../../redux/actions/order/cart.action";
+import ModalCart from "../common/modalcart/ModalCart";
 
-const Category = () => {
+interface Props {
+  type?: string;
+  idCat?: number;
+}
+
+const Category = ({ type, idCat }: Props) => {
+  const [products, setProducts] = useState<productFilterInfo>();
+
   useEffect(() => {
-    new Swiper(".swiper-category-1", {
+    const getListNewProduct = async () => {
+      try {
+        const result = await axios.get(`/product/list?type=${type}`);
+
+        setProducts(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getListNewProduct();
+  }, [type]);
+
+  SwiperCore.use([Navigation]);
+  useEffect(() => {
+    new Swiper(`.swiper-category-${idCat}`, {
       slidesPerView: 2,
       spaceBetween: 30,
       navigation: {
-        nextEl: " .next-big-1",
-        prevEl: ".prev-big-1",
+        nextEl: `.next-big-${idCat}`,
+        prevEl: `.prev-big-${idCat}`,
       },
       breakpoints: {
         992: {
@@ -23,32 +48,99 @@ const Category = () => {
         },
       },
     });
-    new Swiper(".swiper__product-1", {
-      slidesPerView: 2,
-      spaceBetween: 20,
-      navigation: {
-        nextEl: ".next-small-1",
-        prevEl: ".prev-small-1",
-      },
-      breakpoints: {
-        1200: {
-          slidesPerView: 3,
-          spaceBetween: 20,
+    for (let i = 0; i < products?.products?.length!; i++) {
+      new Swiper(`.swiper__product-${i}`, {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        navigation: {
+          nextEl: `.next-small-${i}`,
+          prevEl: `.prev-small-${i}`,
         },
-      },
-    });
+        breakpoints: {
+          1200: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+        },
+      });
+    }
   });
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
+
+  const [checkUser, setCheckUser] = useState<boolean>(false);
+  const authLogin = useSelector<RootState, authState>(
+    (state) => state.authLogin
+  );
+  const { authInfo } = authLogin;
+  useEffect(() => {
+    if (authInfo) {
+      setCheckUser(true);
+    }
+  }, [authInfo]);
+
+  const addToCartHandler = async (
+    productId: any,
+    name: any,
+    image: any,
+    price: any,
+    discount: any,
+    inStock: any,
+    quantity: any
+  ) => {
+    await dispatch(
+      addToCart({
+        productId,
+        name,
+        image,
+        price,
+        discount,
+        inStock,
+        quantity,
+      })
+    );
+    setOpenModal(!openModal);
+  };
+
+  const toVND = (price: any) => {
+    let vnd =
+      typeof price === "undefined"
+        ? 0
+        : price.toLocaleString("vi-VN", {
+            currency: "VND",
+          });
+    return vnd;
+  };
+
+  const priceDiscount = (price: any, discount: any) => {
+    return toVND(price - price * (discount / 100));
+  };
+
   return (
-    <div className="category category-woman">
+    <div
+      className={`category ${
+        type === "women"
+          ? "category-woman"
+          : type === "men"
+          ? "category-man"
+          : "category-kid"
+      }`}
+    >
+      <ModalCart openModal={openModal} setOpenModal={setOpenModal} />
       <div className="container-ct">
         <div className="row">
           <div className="category__name col-ct">
             <div className="category__name-img">
               <div className="category__name-head">
-                <a href="/" className="link">
-                  Cho nữ
-                </a>
+                <Link to={`/product?type=${type}`} className="link">
+                  {type === "women"
+                    ? "Cho nữ"
+                    : type === "men"
+                    ? "Cho nam"
+                    : "Trẻ em"}
+                </Link>
                 <span>
                   Cung cấp những sản phẩm<br></br>
                   bộ sưu tập mới nhất<br></br>
@@ -56,203 +148,130 @@ const Category = () => {
                 </span>
               </div>
               <div className="category__name-btn">
-                <a href="/" className="link">
+                <Link to={`/product?type=${type}`} className="link">
                   Xem thêm
-                </a>
+                </Link>
               </div>
             </div>
           </div>
           <div className="category__list col-ct">
-            <i className="fas fa-angle-left prev-big prev-big-1 animate__animated animate__fadeInLeft"></i>
-            <div className="swiper-container swiper-category-1">
+            <i
+              className={`fas fa-angle-left prev-big prev-big-${idCat} animate__animated animate__fadeInLeft`}
+            ></i>
+            <div className={`swiper-container swiper-category-${idCat}`}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide product">
-                  <div className="product__img">
-                    <span className="product__img-promotion">-17%</span>
-                    <a href="/" className="product__img-img link">
-                      <img src={image1} alt="" />
-                    </a>
-                    <a href="/" className="product__img-btn link">
-                      Mua ngay
-                    </a>
-                  </div>
-                  <div className="product__slide">
-                    <i className="fas fa-angle-left prev-small-1"></i>
-                    <div className="swiper-container swiper__product-1">
-                      <div className="swiper-wrapper">
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image1} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image2} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image3} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image4} alt="" />
-                        </div>
-                      </div>
+                {products?.products?.map((product, index) => (
+                  <div className="swiper-slide product" key={index}>
+                    <div className="product__img">
+                      <span
+                        className={`product__img-promotion ${
+                          product.discount === 0 ? "d-none" : ""
+                        }`}
+                      >
+                        -{product.discount}%
+                      </span>
+                      <Link
+                        to={`/product/${product.slug}`}
+                        className="product__img-img link"
+                      >
+                        <img src={product.image1} alt="" />
+                      </Link>
+                      {!checkUser ? (
+                        <Popup
+                          trigger={
+                            <Link to="#" className="product__img-btn link">
+                              Mua ngay
+                            </Link>
+                          }
+                          modal
+                          nested
+                        >
+                          {(
+                            close:
+                              | React.MouseEventHandler<HTMLButtonElement>
+                              | undefined
+                          ) => <ModalLogin close={close} />}
+                        </Popup>
+                      ) : (
+                        <Link
+                          to="#"
+                          onClick={() =>
+                            addToCartHandler(
+                              product._id,
+                              product.name,
+                              product.image1,
+                              product.price,
+                              product.discount,
+                              product.inStock,
+                              1
+                            )
+                          }
+                          className="product__img-btn link"
+                        >
+                          Mua ngay
+                        </Link>
+                      )}
                     </div>
-                    <i className="fas fa-angle-right next-small-1"></i>
-                  </div>
-                  <div className="product__infor">
-                    <div className="product__infor-title">
-                      <a href="/" className="link">
-                        Adidas NEO Men White
-                      </a>
-                    </div>
-                    <div className="product__infor-branch">
-                      <a href="/" className="link">
-                        Adidas
-                      </a>
-                    </div>
-                    <div className="product__infor-price">
-                      <span className="price--new">2.100.000₫</span>
-                      <span className="price--old">2.500.000₫</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="swiper-slide product">
-                  <div className="product__img">
-                    <span className="product__img-promotion">-17%</span>
-                    <a href="/" className="product__img-img link">
-                      <img src={image2} alt="" />
-                    </a>
-                    <a href="/" className="product__img-btn link">
-                      Mua ngay
-                    </a>
-                  </div>
-                  <div className="product__slide">
-                    <i className="fas fa-angle-left prev-small-2"></i>
-                    <div className="swiper-container swiper__product-2">
-                      <div className="swiper-wrapper">
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image2} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image3} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image4} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image5} alt="" />
-                        </div>
-                      </div>
-                    </div>
-                    <i className="fas fa-angle-right next-small-2"></i>
-                  </div>
-                  <div className="product__infor">
-                    <div className="product__infor-title">
-                      <a href="/" className="link">
-                        Adidas NEO Men White
-                      </a>
-                    </div>
-                    <div className="product__infor-branch">
-                      <a href="/" className="link">
-                        Adidas
-                      </a>
-                    </div>
-                    <div className="product__infor-price">
-                      <span className="price--new">2.100.000₫</span>
-                      <span className="price--old">2.500.000₫</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="swiper-slide product">
-                  <div className="product__img">
-                    <span className="product__img-promotion">-17%</span>
-                    <a href="/" className="product__img-img link">
-                      <img src={image5} alt="" />
-                    </a>
-                    <a href="/" className="product__img-btn link">
-                      Mua ngay
-                    </a>
-                  </div>
-                  <div className="product__slide">
-                    <i className="fas fa-angle-left prev-small-3"></i>
-                    <div className="swiper-container swiper__product-3">
-                      <div className="swiper-wrapper">
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image1} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image4} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image6} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image5} alt="" />
+                    <div className="product__slide">
+                      <i
+                        className={`fas fa-angle-left prev-small-${index}`}
+                      ></i>
+                      <div
+                        className={`swiper-container swiper__product-${index}`}
+                      >
+                        <div className="swiper-wrapper">
+                          <div className="swiper-slide product__slide-img">
+                            <img src={product.image1} alt="" />
+                          </div>
+                          <div className="swiper-slide product__slide-img">
+                            <img src={product.image2} alt="" />
+                          </div>
+                          <div className="swiper-slide product__slide-img">
+                            <img src={product.image3} alt="" />
+                          </div>
+                          <div className="swiper-slide product__slide-img">
+                            <img src={product.image4} alt="" />
+                          </div>
+                          <div className="swiper-slide product__slide-img">
+                            <img src={product.image5} alt="" />
+                          </div>
                         </div>
                       </div>
+                      <i
+                        className={`fas fa-angle-right next-small-${index}`}
+                      ></i>
                     </div>
-                    <i className="fas fa-angle-right next-small-3"></i>
-                  </div>
-                  <div className="product__infor">
-                    <div className="product__infor-title">
-                      <a href="/" className="link">
-                        Adidas NEO Men White
-                      </a>
-                    </div>
-                    <div className="product__infor-branch">
-                      <a href="/" className="link">
-                        Adidas
-                      </a>
-                    </div>
-                    <div className="product__infor-price">
-                      <span className="price--new">2.100.000₫</span>
-                      <span className="price--old">2.500.000₫</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="swiper-slide product">
-                  <div className="product__img">
-                    <span className="product__img-promotion">-17%</span>
-                    <a href="/" className="product__img-img link">
-                      <img src={image1} alt="" />
-                    </a>
-                    <a href="/" className="product__img-btn link">
-                      Mua ngay
-                    </a>
-                  </div>
-                  <div className="product__slide">
-                    <i className="fas fa-angle-left prev-small-4"></i>
-                    <div className="swiper-container swiper__product-4">
-                      <div className="swiper-wrapper">
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image1} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image2} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image3} alt="" />
-                        </div>
-                        <div className="swiper-slide product__slide-img">
-                          <img src={image4} alt="" />
-                        </div>
+                    <div className="product__infor">
+                      <div className="product__infor-title">
+                        <Link to={`/product/${product.slug}`} className="link">
+                          {product.name}
+                        </Link>
+                      </div>
+                      <div className="product__infor-branch">
+                        <Link to={`/product/${product.brand}`} className="link">
+                          {product.brand}
+                        </Link>
+                      </div>
+                      <div className="product__infor-price">
+                        <span className="price--new">
+                          {priceDiscount(product.price, product.discount)}₫
+                        </span>
+                        <span
+                          className={`price--old ${
+                            product.discount === 0 ? "d-none" : ""
+                          }`}
+                        >
+                          {toVND(product.price)}₫
+                        </span>
                       </div>
                     </div>
-                    <i className="fas fa-angle-right next-small-4"></i>
                   </div>
-                  <div className="product__infor">
-                    <div className="product__infor-title link">
-                      <a href="/">Adidas NEO Men White</a>
-                    </div>
-                    <div className="product__infor-branch link">
-                      <a href="/">Adidas</a>
-                    </div>
-                    <div className="product__infor-price">
-                      <span className="price--new">2.100.000₫</span>
-                      <span className="price--old">2.500.000₫</span>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-            <i className="fas fa-angle-right next-big next-big-1 animate__animated animate__fadeInRight"></i>
+            <i
+              className={`fas fa-angle-right next-big next-big-${idCat} animate__animated animate__fadeInRight`}
+            ></i>
           </div>
         </div>
       </div>

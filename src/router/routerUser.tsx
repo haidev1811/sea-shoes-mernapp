@@ -1,5 +1,6 @@
 import {
   AboutPage,
+  AccountPage,
   CartPage,
   ContactPage,
   HomePage,
@@ -64,5 +65,9 @@ export const routerUser = [
   {
     path: "/payment",
     component: PaymentPage,
+  },
+  {
+    path: "/account",
+    component: AccountPage,
   },
 ];

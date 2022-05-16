@@ -1,32 +1,75 @@
-import React from "react";
+import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewContact } from "../../redux/actions/auth/contact.action";
+import { contactState } from "../../redux/reducers/auth/contact.reducer";
+import { RootState } from "../../redux/store";
+import { failureNoti, successNoti } from "../../utils/notifications";
 
 const Contact = () => {
+  const [email, setEmail] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+
+  const dispatch = useDispatch();
+  const contact = useSelector<RootState, contactState>(
+    (state) => state.newContact
+  );
+  const { isFetching, error, success } = contact;
+
+  const handlerAddNewContact = (e: any) => {
+    e.preventDefault();
+    dispatch(addNewContact({ email, phoneNumber, message }));
+  };
+
+  useEffect(() => {
+    if (success) {
+      successNoti();
+    }
+    if (error) {
+      failureNoti();
+    }
+  }, [success, error]);
+
   return (
     <div className="contact">
       <div className="container-ct">
         <div className="row-ct">
           <div className="contact__form">
-            <form action="">
+            <form onSubmit={handlerAddNewContact}>
               <div className="form-item">
                 <label htmlFor="">
                   Email<span> *</span>
                 </label>
-                <input type="email" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <div className="form-item">
                 <label htmlFor="">
                   Số điện thoại<span> *</span>
                 </label>
-                <input type="text" />
+                <input
+                  type="text"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
               </div>
               <div className="form-item">
                 <label htmlFor="">
                   Nội dung <span> *</span>
                 </label>
-                <textarea></textarea>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                ></textarea>
               </div>
               <div className="form-btn">
-                <button>Gửi ngay</button>
+                <button type="submit">
+                  {isFetching ? <CircularProgress size="1rem" /> : "Gửi ngay"}
+                </button>
               </div>
             </form>
           </div>

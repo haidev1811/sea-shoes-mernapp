@@ -120,11 +120,14 @@
             padding: 10px;
 
             &__dot {
+              border: 1px solid #2a9dcc;
               height: 18px;
               width: 18px;
               position: relative;
               border-radius: 50%;
-              background-color: #2a9dcc;
+              &.active {
+                background-color: #2a9dcc;
+              }
 
               &::before {
                 position: absolute;
@@ -331,7 +334,6 @@
             }
 
             .infor__size {
-              display: none;
               font-size: 13px;
               color: #969696;
             }
@@ -377,9 +379,9 @@
     font-size: 12px;
   }
 }
-h2 {
-  display: none;
-}
+// h2 {
+//   display: none;
+// }
 
 @media screen and (max-width: 1350px) {
   .payment {

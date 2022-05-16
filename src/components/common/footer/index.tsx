@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router";
+import $ from "jquery";
 import imgBocongthuong from "../../../assets/images/bocongthuong.png";
 import paymentIcon from "../../../assets/images/payment.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const checkRoleAdmin = useLocation().pathname.includes("admin");
+
+  useEffect(() => {
+    $(".footer__mid .fa-plus").on("click", function () {
+      $(this).parent().next().slideDown();
+      $(this).hide();
+      $(this).next().show();
+    });
+
+    $(".footer__mid .fa-minus").on("click", function () {
+      $(this).parent().next().slideUp();
+      $(this).hide();
+      $(this).prev().show();
+    });
+  });
+
   return (
-    <>
+    <div className={`${checkRoleAdmin ? "d-none" : ""}`}>
       <footer>
         <div className="container-ct">
           <div className="row-ct">
@@ -17,7 +36,7 @@ const Footer = () => {
                     Địa chỉ: 366 Đội Cấn Ba Đình Hà Nội
                   </div>
                   <div className="store-infor-address">
-                    Hotline: <a href="/">0123456789</a>
+                    Hotline: <a href="tel:0123456789">0123456789</a>
                   </div>
                 </div>
               </div>
@@ -28,7 +47,7 @@ const Footer = () => {
                     Địa chỉ: 366 Đội Cấn Ba Đình Hà Nội
                   </div>
                   <div className="store-infor-address">
-                    Hotline: <a href="/">0123456789</a>
+                    Hotline: <a href="tel:0123456789">0123456789</a>
                   </div>
                 </div>
               </div>
@@ -41,29 +60,29 @@ const Footer = () => {
                 </div>
                 <ul>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/" className="link">
                       Trang chủ
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/about" className="link">
                       Giới thiệu
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/product" className="link">
                       Sản phẩm
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/news" className="link">
                       Tin tức
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/contact" className="link">
                       Liên hệ
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -74,29 +93,29 @@ const Footer = () => {
                 </div>
                 <ul>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/" className="link">
                       Trang chủ
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/about" className="link">
                       Giới thiệu
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/product" className="link">
                       Sản phẩm
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/news" className="link">
                       Tin tức
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/" className="link">
+                    <Link to="/contact" className="link">
                       Liên hệ
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -117,13 +136,13 @@ const Footer = () => {
       <div className="footer">
         <div>
           ©Bản quyền thuộc về{" "}
-          <a href="/" className="link">
+          <Link to="/" className="link ml-1">
             Sea Team
-          </a>
+          </Link>
         </div>
         <div>Cung cấp bởi Sapo</div>
       </div>
-    </>
+    </div>
   );
 };
 

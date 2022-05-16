@@ -4,6 +4,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { Link } from "react-router-dom";
 
 interface Props {
   type: any;
@@ -12,16 +13,15 @@ interface Props {
 const Widget = ({ type }: Props) => {
   let data;
 
-  //temporary
-  const amount = 100;
-  const diff = 20;
-
   switch (type) {
     case "user":
       data = {
-        title: "USERS",
+        title: "KHÁCH HÀNG",
         isMoney: false,
-        link: "See all users",
+        link: "Xem danh sách khách hàng",
+        amount: 20,
+        diff: 10,
+        url: "/admin/user",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -35,9 +35,12 @@ const Widget = ({ type }: Props) => {
       break;
     case "order":
       data = {
-        title: "ORDERS",
+        title: "ĐƠN HÀNG",
         isMoney: false,
-        link: "View all orders",
+        link: "Xem tất cả đơn hàng",
+        amount: 15,
+        diff: 20,
+        url: "/admin/order",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -51,9 +54,12 @@ const Widget = ({ type }: Props) => {
       break;
     case "earning":
       data = {
-        title: "EARNINGS",
+        title: "DOANH THU",
         isMoney: true,
-        link: "View net earnings",
+        link: "Xem doanh thu",
+        amount: "45.000.000",
+        diff: 14,
+        url: "/admin",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -64,9 +70,12 @@ const Widget = ({ type }: Props) => {
       break;
     case "balance":
       data = {
-        title: "BALANCE",
+        title: "LỢI NHUẬN",
         isMoney: true,
-        link: "See details",
+        link: "Xem chi tiết",
+        amount: "15.000.000",
+        diff: 20,
+        url: "/admin",
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
@@ -87,14 +96,17 @@ const Widget = ({ type }: Props) => {
       <div className="left">
         <span className="title">{data?.title}</span>
         <span className="counter">
-          {data?.isMoney && "$"} {amount}
+          {data?.amount}
+          {data?.isMoney && "₫"}
         </span>
-        <span className="link">{data?.link}</span>
+        <Link to={`${data?.url}`} className="link">
+          {data?.link}
+        </Link>
       </div>
       <div className="right">
         <div className="percentage positive">
           <KeyboardArrowUpIcon />
-          {diff} %
+          {data?.diff} %
         </div>
         {data?.icon}
       </div>

@@ -102,6 +102,7 @@
         border: 1px solid white;
         color: white;
         &:hover {
+          color: white;
           background-color: #f72b3f;
           border-color: #f72b3f;
         }
@@ -240,6 +241,66 @@
         box-shadow: 5px 0px 35px -10px rgba(0, 0, 0, 0.1),
           -5px 0px 10px -5px rgba(0, 0, 0, 0.1);
       }
+    }
+  }
+}
+
+.popup-overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-login {
+  font-size: 12px;
+  width: 100%;
+  background-color: #fff;
+  min-width: 700px;
+  border-radius: 5px;
+  & > .header-popup {
+    width: 100%;
+    font-size: 23px;
+    text-align: center;
+    padding: 5px 0px;
+  }
+  & > .content {
+    width: 100%;
+    padding: 20px 0px 10px 0px;
+    font-size: 18px;
+    text-align: center;
+  }
+  & > .actions {
+    width: 100%;
+    padding: 15px 0px;
+    text-align: center;
+  }
+  & > .close {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: 10px;
+    top: 10px;
+    font-size: 30px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: none;
+  }
+  & > .close:hover {
+    color: #f72b3f;
+  }
+
+  & > .actions .button {
+    padding: 5px 20px;
+    text-align: center;
+    color: white;
+    background-color: #f72b3f;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #f72b3f;
+    font-size: 20px;
+    &:hover {
+      text-decoration: none;
+      background-color: white;
+      color: #f72b3f;
     }
   }
 }
