@@ -210,7 +210,7 @@ const deleteStaff = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: `Staff has been deleted successfully!`,
+      message: `Staff has been deleted successfull!`,
       staff,
     });
   } catch (error) {
