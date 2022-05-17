@@ -141,7 +141,7 @@ const Login = () => {
           </a>
           <GoogleLogin
             className="button-login"
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
             buttonText="Google"
             onSuccess={handleLoginGG}
             onFailure={handleFailureGG}
